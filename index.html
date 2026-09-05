@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Tareas - Panel de gestión</title>
+<meta name="description" content="Panel para organizar y dar seguimiento a tareas pendientes, en progreso y completadas.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Enlace para saltar el menú y llegar directo al contenido usando el teclado -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<!-- Contenedor general: el atributo data-sidebar controla si el menú
+     está abierto, cerrado (mini) o superpuesto en móvil. Lo lee styles.css
+     y lo cambia script.js. -->
+<div class="app" data-sidebar="abierto">
+
+  <!-- ============================================================
+       BARRA LATERAL
+       ============================================================ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__marca">
+      <span class="sidebar__punto" aria-hidden="true"></span>
+      <span class="sidebar__nombre">Mis Tareas</span>
+    </div>
+
+    <nav class="sidebar__nav" role="navigation" aria-label="Menú principal">
+      <ul>
+        <li>
+          <a href="#" class="sidebar__enlace sidebar__enlace--activo" aria-current="page">
+            <svg class="sidebar__icono" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5"/></svg>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar__enlace">
+            <svg class="sidebar__icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <span>Todas mis tareas</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar__enlace">
+            <svg class="sidebar__icono" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
+            <span>Calendario</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar__enlace">
+            <svg class="sidebar__icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M2.5 20c0-3.5 2.8-6 6.5-6s6.5 2.5 6.5 6"/><path d="M17 8.3a2.9 2.9 0 1 0 0-5.8M21.5 20c0-2.9-1.8-5-4.2-5.7"/></svg>
+            <span>Equipo</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar__enlace">
+            <svg class="sidebar__icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.5 7.5 0 0 0 0-2l1.9-1.5-2-3.4-2.3.6a7.6 7.6 0 0 0-1.7-1L15 3.6H9l-.3 2.1a7.6 7.6 0 0 0-1.7 1l-2.3-.6-2 3.4L4.6 11a7.5 7.5 0 0 0 0 2l-1.9 1.5 2 3.4 2.3-.6c.5.4 1.1.8 1.7 1l.3 2.1h6l.3-2.1a7.6 7.6 0 0 0 1.7-1l2.3.6 2-3.4-1.9-1.5Z"/></svg>
+            <span>Ajustes</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Botón que colapsa el menú a solo íconos (ver script.js) -->
+    <button class="sidebar__contraer" id="btnContraer" type="button" aria-expanded="true" aria-controls="sidebar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+      <span>Ocultar menú</span>
+    </button>
+  </aside>
+
+  <!-- Fondo oscuro que aparece detrás del menú solo en móvil, para cerrarlo tocando afuera -->
+  <button class="fondo-oscuro" id="fondoOscuro" aria-hidden="true" tabindex="-1"></button>
+
+  <!-- ============================================================
+       ENCABEZADO
+       ============================================================ -->
+  <header class="encabezado">
+    <!-- Este botón solo se muestra en pantallas chicas (ver media query) -->
+    <button class="encabezado__hamburguesa" id="btnMenu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <div class="encabezado__titulo">
+      <h1>Hola de nuevo</h1>
+      <p>Esto es lo que tienes pendiente hoy, 5 de septiembre</p>
+    </div>
+
+    <div class="encabezado__derecha">
+      <button class="encabezado__campana" type="button" aria-label="Notificaciones, 3 sin leer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a6 6 0 0 0-6 6v4l-1.5 3h15L18 12V8a6 6 0 0 0-6-6Z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg>
+        <span class="encabezado__punto-rojo" aria-hidden="true"></span>
+      </button>
+      <div class="avatar" aria-label="Usuario: Mike">MG</div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CONTENIDO PRINCIPAL
+       ============================================================ -->
+  <main class="contenido" id="contenido" role="main">
+
+    <!-- Tarjetas de resumen: se acomodan solas en fila con CSS Grid -->
+    <section class="tarjetas" aria-label="Resumen de tareas">
+      <article class="tarjeta">
+        <p class="tarjeta__numero">6</p>
+        <p class="tarjeta__texto">Pendientes</p>
+      </article>
+      <article class="tarjeta">
+        <p class="tarjeta__numero">3</p>
+        <p class="tarjeta__texto">En progreso</p>
+      </article>
+      <article class="tarjeta tarjeta--exito">
+        <p class="tarjeta__numero">12</p>
+        <p class="tarjeta__texto">Completadas esta semana</p>
+      </article>
+      <article class="tarjeta tarjeta--alerta">
+        <p class="tarjeta__numero">2</p>
+        <p class="tarjeta__texto">Vencidas</p>
+      </article>
+    </section>
+
+    <!-- Gráfico de barras (solo CSS/Flexbox, sin librerías) + lista de urgentes -->
+    <section class="fila-doble">
+      <article class="panel">
+        <h2>Tareas completadas esta semana</h2>
+        <!-- La altura de cada barra viene de la variable --alto en el style de cada div -->
+        <div class="grafico" role="img" aria-label="Gráfico de barras: lunes 2, martes 4, miércoles 1, jueves 3, viernes 5, sábado 0, domingo 0 tareas completadas">
+          <div class="grafico__barra" style="--alto: 30%"><span>2</span><label>Lun</label></div>
+          <div class="grafico__barra" style="--alto: 60%"><span>4</span><label>Mar</label></div>
+          <div class="grafico__barra" style="--alto: 15%"><span>1</span><label>Mié</label></div>
+          <div class="grafico__barra" style="--alto: 45%"><span>3</span><label>Jue</label></div>
+          <div class="grafico__barra grafico__barra--hoy" style="--alto: 80%"><span>5</span><label>Vie</label></div>
+          <div class="grafico__barra" style="--alto: 5%"><span>0</span><label>Sáb</label></div>
+          <div class="grafico__barra" style="--alto: 5%"><span>0</span><label>Dom</label></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Lo más urgente</h2>
+        <ul class="lista-urgente">
+          <li>
+            <span class="lista-urgente__color lista-urgente__color--alta"></span>
+            <div>
+              <p class="lista-urgente__nombre">Entregar informe mensual</p>
+              <p class="lista-urgente__fecha">Vence hoy</p>
+            </div>
+          </li>
+          <li>
+            <span class="lista-urgente__color lista-urgente__color--alta"></span>
+            <div>
+              <p class="lista-urgente__nombre">Responder correos de clientes</p>
+              <p class="lista-urgente__fecha">Vence hoy</p>
+            </div>
+          </li>
+          <li>
+            <span class="lista-urgente__color lista-urgente__color--media"></span>
+            <div>
+              <p class="lista-urgente__nombre">Revisar propuesta de diseño</p>
+              <p class="lista-urgente__fecha">Vence mañana</p>
+            </div>
+          </li>
+          <li>
+            <span class="lista-urgente__color lista-urgente__color--baja"></span>
+            <div>
+              <p class="lista-urgente__nombre">Actualizar documentación interna</p>
+              <p class="lista-urgente__fecha">Vence en 3 días</p>
+            </div>
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Tabla de tareas. Cada fila tiene un checkbox real: al marcarlo,
+         script.js le agrega la clase "fila-completada" (tachado + atenuado).
+         Esto es lo que pide la consigna como "componente interactivo". -->
+    <section class="panel">
+      <h2>Todas mis tareas</h2>
+      <div class="tabla-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Marcar como completada</span></th>
+              <th scope="col">Tarea</th>
+              <th scope="col">Prioridad</th>
+              <th scope="col">Fecha límite</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-titulo="Completada">
+                <label class="check">
+                  <input type="checkbox" aria-label="Marcar 'Entregar informe mensual' como completada">
+                  <span></span>
+                </label>
+              </td>
+              <td data-titulo="Tarea" class="celda-tarea">Entregar informe mensual</td>
+              <td data-titulo="Prioridad"><span class="etiqueta etiqueta--alta">Alta</span></td>
+              <td data-titulo="Fecha límite">05 sep</td>
+              <td data-titulo="Estado"><span class="etiqueta etiqueta--pendiente">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td data-titulo="Completada">
+                <label class="check">
+                  <input type="checkbox" aria-label="Marcar 'Responder correos de clientes' como completada">
+                  <span></span>
+                </label>
+              </td>
+              <td data-titulo="Tarea" class="celda-tarea">Responder correos de clientes</td>
+              <td data-titulo="Prioridad"><span class="etiqueta etiqueta--alta">Alta</span></td>
+              <td data-titulo="Fecha límite">05 sep</td>
+              <td data-titulo="Estado"><span class="etiqueta etiqueta--progreso">En progreso</span></td>
+            </tr>
+            <tr>
+              <td data-titulo="Completada">
+                <label class="check">
+                  <input type="checkbox" aria-label="Marcar 'Revisar propuesta de diseño' como completada">
+                  <span></span>
+                </label>
+              </td>
+              <td data-titulo="Tarea" class="celda-tarea">Revisar propuesta de diseño</td>
+              <td data-titulo="Prioridad"><span class="etiqueta etiqueta--media">Media</span></td>
+              <td data-titulo="Fecha límite">06 sep</td>
+              <td data-titulo="Estado"><span class="etiqueta etiqueta--pendiente">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td data-titulo="Completada">
+                <label class="check">
+                  <input type="checkbox" aria-label="Marcar 'Actualizar documentación interna' como completada">
+                  <span></span>
+                </label>
+              </td>
+              <td data-titulo="Tarea" class="celda-tarea">Actualizar documentación interna</td>
+              <td data-titulo="Prioridad"><span class="etiqueta etiqueta--baja">Baja</span></td>
+              <td data-titulo="Fecha límite">08 sep</td>
+              <td data-titulo="Estado"><span class="etiqueta etiqueta--pendiente">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td data-titulo="Completada">
+                <label class="check">
+                  <input type="checkbox" aria-label="Marcar 'Preparar presentación de equipo' como completada">
+                  <span></span>
+                </label>
+              </td>
+              <td data-titulo="Tarea" class="celda-tarea">Preparar presentación de equipo</td>
+              <td data-titulo="Prioridad"><span class="etiqueta etiqueta--media">Media</span></td>
+              <td data-titulo="Fecha límite">03 sep</td>
+              <td data-titulo="Estado"><span class="etiqueta etiqueta--vencida">Vencida</span></td>
+            </tr>
+            <tr>
+              <td data-titulo="Completada">
+                <label class="check">
+                  <input type="checkbox" checked aria-label="Marcar 'Ordenar carpeta de recursos' como completada">
+                  <span></span>
+                </label>
+              </td>
+              <td data-titulo="Tarea" class="celda-tarea">Ordenar carpeta de recursos</td>
+              <td data-titulo="Prioridad"><span class="etiqueta etiqueta--baja">Baja</span></td>
+              <td data-titulo="Fecha límite">02 sep</td>
+              <td data-titulo="Estado"><span class="etiqueta etiqueta--completa">Completada</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       PIE DE PÁGINA
+       ============================================================ -->
+  <footer class="pie">
+    <p>Panel de tareas de uso personal — proyecto de práctica.</p>
+    <nav aria-label="Enlaces del pie">
+      <a href="#">Ayuda</a>
+      <a href="#">Contacto</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
